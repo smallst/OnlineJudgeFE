@@ -22,6 +22,15 @@ export default {
       params
     })
   },
+  getCourseList (offset, limit) {
+    let params = {
+      offset: offset,
+      limit: limit
+    }
+    return ajax('course', 'get', {
+      params
+    })
+  },
   login (data) {
     return ajax('login', 'post', {
       data

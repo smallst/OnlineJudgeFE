@@ -17,6 +17,13 @@ export const m = {
   Contest: '比赛&练习',
   Contest_List: '比赛列表',
   Create_Contest: '创建比赛',
+  Collection: '课程与练习',
+  Course: '课程',
+  Course_List: '课程列表',
+  Create_Course: '创建课程',
+  Practice: '练习',
+  Practice_List: '练习列表',
+  Create_Practice: '创建练习',
   // User.vue
   User_User: '用户',
   Import_User: '导入用户',
@@ -98,6 +105,11 @@ export const m = {
   New_Tag: '新增标签',
   // ProblemList.vue
   Contest_Problem_List: '比赛问题列表',
+  Course_Problem_List: '课程问题列表',
+  Practice_Problem_List: '练习问题列表',
+  // Course.vue
+  CollectionTitle: '标题',
+  CollectionDescription: '描述',
   // Contest.vue
   ContestTitle: '标题',
   ContestDescription: '描述',

@@ -1,6 +1,6 @@
 <template>
   <div class="view">
-    <Panel :title="contestId ? this.$i18n.t('m.Contest_Problem_List') : this.$i18n.t('m.Problem_List')">
+    <Panel :title="pageTitle">
       <div slot="header">
         <el-input
           v-model="keyword"
@@ -50,7 +50,7 @@
           prop="create_time"
           label="Create Time">
           <template slot-scope="scope">
-            {{scope.row.create_time | localtime }}
+            {{scope.row.create_time }}
           </template>
         </el-table-column>
         <el-table-column
@@ -84,7 +84,7 @@
         <el-button type="primary" size="small"
                    @click="goCreateProblem" icon="el-icon-plus">Create
         </el-button>
-        <el-button v-if="contestId" type="primary"
+        <el-button v-if="pageType !== 'problem'" type="primary"
                    size="small" icon="el-icon-plus"
                    @click="addProblemDialogVisible = true">Add From Public Problem
         </el-button>
@@ -111,11 +111,11 @@
       </span>
     </el-dialog>
     <el-dialog title="Add Contest Problem"
-               v-if="contestId"
+               v-if="cId"
                width="80%"
                :visible.sync="addProblemDialogVisible"
                @close-on-click-modal="false">
-      <add-problem-component :contestID="contestId" @on-change="getProblemList"></add-problem-component>
+      <add-problem-component :cid="cId" :type="pageType" @on-change="getProblemList"></add-problem-component>
     </el-dialog>
   </div>
 </template>
@@ -129,6 +129,31 @@
     name: 'ProblemList',
     components: {
       AddProblemComponent
+    },
+    computed: {
+      pageType () {
+        if (this.contestId) {
+          return 'contest'
+        } else if (this.collectionType) {
+          return this.collectionType
+        } else {
+          return 'problem'
+        }
+      },
+      cId () {
+        return this.contestId || this.courseid || this.practiceId
+      },
+      pageTitle () {
+        if (this.contestId) {
+          return this.$i18n.t('m.Contest_Problem_List')
+        } else if (this.courseId) {
+          return this.$i18n.t('m.Course_Problem_List')
+        } else if (this.practiceId) {
+          return this.$i18n.t('m.Practice_Problem_List')
+        } else {
+          return this.$i18n.t('m.Problem_List')
+        }
+      }
     },
     data () {
       return {
@@ -151,6 +176,14 @@
     mounted () {
       this.routeName = this.$route.name
       this.contestId = this.$route.params.contestId
+      switch (this.collectionType) {
+        case 'course':
+          this.courseId = this.$route.params.id
+          break
+        case 'practice':
+          this.practiceId = this.$route.params.id
+          break
+      }
       this.getProblemList(this.currentPage)
     },
     methods: {
@@ -158,10 +191,10 @@
         row.isEditing = true
       },
       goEdit (problemId) {
-        if (this.routeName === 'problem-list') {
-          this.$router.push({name: 'edit-problem', params: {problemId}})
-        } else if (this.routeName === 'contest-problem-list') {
+        if (this.routeName === 'contest-problem-list') {
           this.$router.push({name: 'edit-contest-problem', params: {problemId: problemId, contestId: this.contestId}})
+        } else {
+          this.$router.push({name: 'edit-problem', params: {problemId}})
         }
       },
       goCreateProblem () {
@@ -169,6 +202,8 @@
           this.$router.push({name: 'create-problem'})
         } else if (this.routeName === 'contest-problem-list') {
           this.$router.push({name: 'create-contest-problem', params: {contestId: this.contestId}})
+        } else {
+          this.$router.push({name: 'create-' + this.collectionType + '-problem', params: { cid: this.$route.params.id }})
         }
       },
       // 切换页码回调
@@ -178,12 +213,19 @@
       },
       getProblemList (page = 1) {
         this.loading = true
-        let funcName = this.routeName === 'problem-list' ? 'getProblemList' : 'getContestProblemList'
         let params = {
           limit: this.pageSize,
           offset: (page - 1) * this.pageSize,
           keyword: this.keyword,
-          contest_id: this.contestId
+          contest_id: this.contestId,
+          collection_id: this.courseId || this.practiceId,
+          collection_type: this.collectionType
+        }
+        let funcName = 'getProblemList'
+        if (this.contestId) {
+          funcName = 'getContestProblemList'
+        } else if (this.collectionType) {
+          funcName = 'getCollectionProblemList'
         }
         api[funcName](params).then(res => {
           this.loading = false
@@ -200,7 +242,7 @@
         this.$confirm('Sure to delete this problem? The associated submissions will be deleted as well.', 'Delete Problem', {
           type: 'warning'
         }).then(() => {
-          let funcName = this.routeName === 'problem-list' ? 'deleteProblem' : 'deleteContestProblem'
+          let funcName = this.contestId ? 'deleteContestProblem' : 'deleteProblem'
           api[funcName](id).then(() => [
             this.getProblemList(this.currentPage - 1)
           ]).catch(() => {
@@ -242,6 +284,7 @@
         api.getProblemList()
       }
     },
+    props: ['collectionType'],
     watch: {
       '$route' (newVal, oldVal) {
         this.contestId = newVal.params.contestId

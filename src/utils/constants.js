@@ -76,6 +76,27 @@ export const CONTEST_STATUS = {
   'ENDED': '-1'
 }
 
+export const COLLECTION_STATUS = {
+  'NOT_START': '1',
+  'UNDERWAY': '0',
+  'ENDED': '-1'
+}
+
+export const COLLECTION_STATUS_REVERSE = {
+  '1': {
+    name: 'Not Started',
+    color: 'yellow'
+  },
+  '0': {
+    name: 'Underway',
+    color: 'green'
+  },
+  '-1': {
+    name: 'Ended',
+    color: 'red'
+  }
+}
+
 export const CONTEST_STATUS_REVERSE = {
   '1': {
     name: 'Not Started',

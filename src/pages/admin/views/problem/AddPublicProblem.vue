@@ -46,7 +46,7 @@
 
   export default {
     name: 'add-problem-from-public',
-    props: ['contestID'],
+    props: ['type', 'cid'],
     data () {
       return {
         page: 1,
@@ -55,15 +55,24 @@
         loading: false,
         problems: [],
         contest: {},
+        collection: {},
         keyword: ''
       }
     },
     mounted () {
-      api.getContest(this.contestID).then(res => {
-        this.contest = res.data.data
-        this.getPublicProblem()
-      }).catch(() => {
-      })
+      // todo: support contest/course/practice
+      if (this.type === 'contest') {
+        api.getContest(this.cid).then(res => {
+          this.contest = res.data.data
+          this.getPublicProblem()
+        }).catch(() => {
+        })
+      } else {
+        api.getCollection(this.type, this.cid).then(res => {
+          this.collection = res.data.data
+          this.getPublicProblem()
+        })
+      }
     },
     methods: {
       getPublicProblem (page) {
@@ -71,8 +80,10 @@
         let params = {
           keyword: this.keyword,
           offset: (page - 1) * this.limit,
-          limit: this.limit,
-          rule_type: this.contest.rule_type
+          limit: this.limit
+        }
+        if (this.type === 'contest') {
+          params['rule_type'] = this.contest.rule_type
         }
         api.getProblemList(params).then(res => {
           this.loading = false
@@ -82,18 +93,24 @@
         })
       },
       handleAddProblem (problemID) {
-        this.$prompt('Please input display id for the contest problem', 'confirm').then(({value}) => {
-          let data = {
-            problem_id: problemID,
-            contest_id: this.contestID,
-            display_id: value
-          }
-          api.addProblemFromPublic(data).then(() => {
-            this.$emit('on-change')
+        let data = {
+          type: this.type,
+          pid: problemID,
+          cid: this.cid
+        }
+        if (this.type === 'contest') {
+          this.$prompt('Please input display id for the contest problem', 'confirm').then(({value}) => {
+            data.display_id = value
+            api.addProblemFromPublic(this.type === 'contest' ? 'contest' : 'collection', data).then(() => {
+              this.$emit('on-change')
+            }, () => {})
           }, () => {
           })
-        }, () => {
-        })
+        } else {
+          api.addProblemFromPublic('collection', data).then(() => {
+            this.$emit('on-change')
+          })
+        }
       }
     },
     watch: {

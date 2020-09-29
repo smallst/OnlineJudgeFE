@@ -203,6 +203,63 @@ export default {
       data
     })
   },
+  getList (type, offset, limit, keyword) {
+    let params = {paging: true, offset, limit}
+    if (keyword) {
+      params.keyword = keyword
+    }
+    return ajax('admin/' + type, 'get', {
+      params: params
+    })
+  },
+  saveCollection (type, method, data) {
+    let m = method === 'create' ? 'post' : 'put'
+    return ajax('admin/' + type, m, {
+      data
+    })
+  },
+  getCollection (type, id) {
+    return ajax('admin/' + type, 'get', {
+      params: {
+        id
+      }
+    })
+  },
+  getCollectionProblemList (params) {
+    params = utils.filterEmptyValue(params)
+    return ajax('admin/collection/problem', 'get', {
+      params
+    })
+  },
+  getCourseProblem (id) {
+    return ajax('admin/course/problem', 'get', {
+      params: {
+        id
+      }
+    })
+  },
+  createCourseProblem (data) {
+    return ajax('admin/course/problem', 'post', {
+      data
+    })
+  },
+  editCourseProblem (data) {
+    return ajax('admin/course/problem', 'put', {
+      data
+    })
+  },
+  deleteCourseProblem (id) {
+    return ajax('admin/course/problem', 'delete', {
+      params: {
+        id
+      }
+    })
+  },
+  addCollectionProblem (data) {
+    return ajax('admin/collection/problem', 'post', {
+      data
+    })
+  },
   getProblemTagList () {
     return ajax('problem/tags', 'get')
   },
@@ -254,6 +311,11 @@ export default {
       }
     })
   },
+  createCollectionProblem (data) {
+    return ajax('admin/collection/problem', 'post', {
+      data
+    })
+  },
   createContestProblem (data) {
     return ajax('admin/contest/problem', 'post', {
       data
@@ -276,8 +338,8 @@ export default {
       data
     })
   },
-  addProblemFromPublic (data) {
-    return ajax('admin/contest/add_problem_from_public', 'post', {
+  addProblemFromPublic (type, data) {
+    return ajax('admin/' + type + '/add_problem_from_public', 'post', {
       data
     })
   },

@@ -17,6 +17,13 @@ export const m = {
   Contest: 'Contest',
   Contest_List: 'Contest List',
   Create_Contest: 'Create Contest',
+  Collection: 'Course and Practice',
+  Course: 'Course',
+  Course_List: 'Course List',
+  Create_Course: 'Create Course',
+  Practice: 'Practice',
+  Practice_List: 'Practice List',
+  Create_Practice: 'Create Practice',
   // User.vue
   User_User: 'User',
   Import_User: 'Import User',
@@ -98,6 +105,9 @@ export const m = {
   New_Tag: 'New Tag',
    // ProblemList.vue
   Contest_Problem_List: 'Contest Problem List',
+  // Course.vue
+  CourseTitle: 'Title',
+  CourseDescription: 'Description',
   // Contest.vue
   ContestTitle: 'Title',
   ContestDescription: 'Description',

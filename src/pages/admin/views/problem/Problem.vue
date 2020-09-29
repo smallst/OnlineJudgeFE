@@ -6,7 +6,7 @@
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item prop="_id" :label="$t('m.Display_ID')"
-                          :required="this.routeName === 'create-contest-problem' || this.routeName === 'edit-contest-problem'">
+                          :required="problemInCollection"">
               <el-input :placeholder="$t('m.Display_ID')" v-model="problem._id"></el-input>
             </el-form-item>
           </el-col>
@@ -278,6 +278,19 @@
       Accordion,
       CodeMirror
     },
+    computed: {
+      problemInCollection () {
+        let routerNames = ['create-contest-problem',
+          'create-course-problem',
+          'create-practice-problem',
+          'edit-contest-problem',
+          'edit-course-problem',
+          'edit-practice-problem'
+        ]
+        return routerNames.indexOf(this.routeName) !== -1
+      }
+    },
+    props: ['type', 'cid'],
     data () {
       return {
         rules: {
@@ -567,6 +580,8 @@
         }
         let funcName = {
           'create-problem': 'createProblem',
+          'create-course-problem': 'createCollectionProblem',
+          'create-practice-problem': 'createCollectionProblem',
           'edit-problem': 'editProblem',
           'create-contest-problem': 'createContestProblem',
           'edit-contest-problem': 'editContestProblem'
@@ -575,8 +590,14 @@
         if (funcName === 'editContestProblem') {
           this.problem.contest_id = this.contest.id
         }
+        if (funcName === 'createCollectionProblem') {
+          this.problem.collection_type = this.type
+          this.problem.collection_id = this.$route.params.cid
+        }
         api[funcName](this.problem).then(res => {
-          if (this.routeName === 'create-contest-problem' || this.routeName === 'edit-contest-problem') {
+          if (this.type) {
+            this.$router.push({name: this.type + '-problem-list', params: {id: this.$route.params.cid}})
+          } else if (this.routeName === 'create-contest-problem' || this.routeName === 'edit-contest-problem') {
             this.$router.push({name: 'contest-problem-list', params: {contestId: this.$route.params.contestId}})
           } else {
             this.$router.push({name: 'problem-list'})

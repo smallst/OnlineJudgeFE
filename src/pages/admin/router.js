@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 // 引入 view 组件
-import { Announcement, Conf, Contest, ContestList, Home, JudgeServer, Login,
+import { Announcement, Conf, Contest, ContestList, Collection, CollectionList, Home, JudgeServer, Login,
   Problem, ProblemList, User, PruneTestCase, Dashboard, ProblemImportOrExport } from './views'
 Vue.use(VueRouter)
 
@@ -68,6 +68,71 @@ export default new VueRouter({
           path: '/problem/batch_ops',
           name: 'problem_batch_ops',
           component: ProblemImportOrExport
+        },
+        {
+          path: '/practice/create',
+          name: 'create-practice',
+          component: Collection,
+          props: {type: 'practice', method: 'create'}
+        },
+        {
+          path: '/practice/edit',
+          name: 'edit-practice',
+          component: Collection,
+          props: {type: 'practice', method: 'edit'}
+        },
+        {
+          path: '/course/create',
+          name: 'create-course',
+          component: Collection,
+          props: {type: 'course', method: 'create'}
+        },
+        {
+          path: '/course/edit',
+          name: 'edit-course',
+          component: Collection,
+          props: {type: 'course', method: 'edit'}
+        },
+        {
+          path: '/practice',
+          name: 'practice-list',
+          component: CollectionList,
+          props: {type: 'practice'}
+        },
+        {
+          path: '/course',
+          name: 'course-list',
+          component: CollectionList,
+          props: {type: 'course'}
+        },
+        {
+          path: '/course/:id/problems',
+          name: 'course-problem-list',
+          component: ProblemList,
+          props: {collectionType: 'course'}
+        },
+        {
+          path: '/practice/:id/problems',
+          name: 'practice-problem-list',
+          component: ProblemList,
+          props: {collectionType: 'practice'}
+        },
+        {
+          path: '/course/:cid/problem/create',
+          name: 'create-course-problem',
+          component: Problem,
+          props: {type: 'course'}
+        },
+        {
+          path: '/practice/:cid/problem/create',
+          name: 'create-practice-problem',
+          component: Problem,
+          props: {type: 'practice'}
+        },
+        {
+          path: '/course/:courseId/problem/:problemId/edit',
+          name: 'edit-course-problem',
+          component: Problem
         },
         {
           path: '/contest/create',

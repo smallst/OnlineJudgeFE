@@ -68,6 +68,9 @@ export const m = {
   mood: '格言',
   AC: 'AC',
   Rating: '评分',
+  // Courses.vue
+  Courses: '课程',
+  No_Courses: '暂无课程',
   // Announcements.vue
   Contest_Announcements: '比赛公告',
   By: '创建人',

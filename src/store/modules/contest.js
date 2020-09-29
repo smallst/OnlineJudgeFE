@@ -1,8 +1,9 @@
-import moment from 'moment'
+import * as moment from 'moment'
 import types from '../types'
 import api from '@oj/api'
 import { CONTEST_STATUS, USER_TYPE, CONTEST_TYPE } from '@/utils/constants'
 
+console.log(moment)
 const state = {
   now: moment(),
   access: false,

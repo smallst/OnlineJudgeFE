@@ -20,11 +20,18 @@
       <el-menu-item index="/problem/batch_ops">{{$t('m.Export_Import_Problem')}}</el-menu-item>
 
     </el-submenu>
-    <el-submenu index="contest">
-      <template slot="title"><i class="el-icon-fa-trophy"></i>{{$t('m.Contest')}}</template>
-      <el-menu-item index="/contest">{{$t('m.Contest_List')}}</el-menu-item>
-      <el-menu-item index="/contest/create">{{$t('m.Create_Contest')}}</el-menu-item>
+    <el-submenu index="collection">
+      <template slot="title"><i class="el-icon-fa-bars"></i>{{$t('m.Collection')}}</template>
+      <el-menu-item index="/course">{{$t('m.Course_List')}}</el-menu-item>
+      <el-menu-item index="/course/create">{{$t('m.Create_Course')}}</el-menu-item>
+      <el-menu-item index="/practice">{{$t('m.Practice_List')}}</el-menu-item>
+      <el-menu-item index="/practice/create">{{$t('m.Create_Practice')}}</el-menu-item>
     </el-submenu>
+    <!-- <el-submenu index="contest">
+         <template slot="title"><i class="el-icon-fa-trophy"></i>{{$t('m.Contest')}}</template>
+         <el-menu-item index="/contest">{{$t('m.Contest_List')}}</el-menu-item>
+         <el-menu-item index="/contest/create">{{$t('m.Create_Contest')}}</el-menu-item>
+         </el-submenu> -->
   </el-menu>
 </template>
 
