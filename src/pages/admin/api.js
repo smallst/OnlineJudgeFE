@@ -231,6 +231,12 @@ export default {
       params
     })
   },
+  getCollectionParticipantList (params) {
+    params = utils.filterEmptyValue(params)
+    return ajax('admin/collection/participant', 'get', {
+      params
+    })
+  },
   getCourseProblem (id) {
     return ajax('admin/course/problem', 'get', {
       params: {
@@ -340,6 +346,11 @@ export default {
   },
   addProblemFromPublic (type, data) {
     return ajax('admin/' + type + '/add_problem_from_public', 'post', {
+      data
+    })
+  },
+  addCollectionParticipant (data) {
+    return ajax('admin/collection/participant', 'post', {
       data
     })
   },

@@ -1,7 +1,8 @@
 <template>
   <Row type="flex" justify="space-around">
     <Col :span="18">
-    <Courses class="courses"></Courses>
+    <Collections :type="'course'" class="courses"></Collections>
+    <Collections :type="'practice'" class="practices"></Collections>
     </Col>
     <Col :span="4">
     <panel shadow v-if="contests.length" class="contest">
@@ -36,7 +37,8 @@
 
 <script>
  import Announcements from './Announcements.vue'
- import Courses from './Courses.vue'
+ import Collections from './MyCollections.vue'
+ import Practices from './Practices.vue'
  import api from '@oj/api'
  import time from '@/utils/time'
  import { CONTEST_STATUS } from '@/utils/constants'
@@ -45,7 +47,8 @@
    name: 'home',
    components: {
      Announcements,
-     Courses
+     Collections,
+     Practices
    },
    data () {
      return {

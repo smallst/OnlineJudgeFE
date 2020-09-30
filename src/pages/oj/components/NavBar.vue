@@ -6,30 +6,10 @@
         <Icon type="home"></Icon>
         {{$t('m.Home')}}
       </Menu-item>
-      <Menu-item name="/problem">
-        <Icon type="ios-keypad"></Icon>
-        {{$t('m.NavProblems')}}
-      </Menu-item>
-      <Menu-item name="/contest">
-        <Icon type="trophy"></Icon>
-        {{$t('m.Contests')}}
-      </Menu-item>
-      <Menu-item name="/status">
-        <Icon type="ios-pulse-strong"></Icon>
-        {{$t('m.NavStatus')}}
-      </Menu-item>
-      <Submenu name="rank">
-        <template slot="title">
-          <Icon type="podium"></Icon>
-          {{$t('m.Rank')}}
-        </template>
-        <Menu-item name="/acm-rank">
-          {{$t('m.ACM_Rank')}}
-        </Menu-item>
-        <Menu-item name="/oi-rank">
-          {{$t('m.OI_Rank')}}
-        </Menu-item>
-      </Submenu>
+      <!-- <Menu-item name="/practices">
+           <Icon type="ios-keypad"></Icon>
+           {{$t('m.Practices')}}
+           </Menu-item> -->
       <Submenu name="about">
         <template slot="title">
           <Icon type="information-circled"></Icon>

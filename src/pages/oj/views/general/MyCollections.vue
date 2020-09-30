@@ -1,5 +1,5 @@
 <template>
-  <Panel shadow :padding="10">
+  <Panel shadow :padding="10" v-if="collections.length">
     <div slot="title">
       {{title}}
     </div>
@@ -8,32 +8,11 @@
       <Button v-else type="ghost" icon="ios-undo" @click="goBack">{{$t('m.Back')}}</Button>
     </div>
 
-    <transition-group name="course-animate" mode="in-out">
-      <div class="no-course" v-if="!courses.length" key="no-course">
-        <p>{{$t('m.No_Courses')}}</p>
+    <transition-group name="collection-animate" mode="in-out">
+      <div class="no-collection" v-if="!collections.length" key="no-collection">
+        <p>{{$t('m.No_Collections')}}</p>
       </div>
-      <template v-if="listVisible">
-        <ul class="courses-container" key="list">
-          <li v-for="course in courses" :key="course.title">
-            <div class="flex-container">
-              <div class="title"><a class="entry" @click="goCourse(course)">
-                {{course.title}}</a></div>
-              <div class="date">{{course.create_time | localtime }}</div>
-              <div class="creator"> {{$t('m.By')}} {{course.created_by.username}}</div>
-            </div>
-          </li>
-        </ul>
-        <Pagination v-if="!isContest"
-                    key="page"
-                    :total="total"
-                    :page-size="limit"
-                    @on-change="getCourseList">
-        </Pagination>
-      </template>
-
-      <template v-else>
-        <div v-katex v-html="course.content" key="content" class="content-container markdown-body"></div>
-      </template>
+      <Collection v-for="collection in collections" :key="collection.id" :collection="collection" ></Collection>
     </transition-group>
   </Panel>
 </template>
@@ -41,67 +20,66 @@
 <script>
   import api from '@oj/api'
   import Pagination from '@oj/components/Pagination'
+  import Collection from '@oj/views/collection/Collection'
 
   export default {
-    name: 'Courses',
+    name: 'Collections',
     components: {
-      Pagination
+      Pagination,
+      Collection
     },
     data () {
       return {
         limit: 10,
         total: 10,
         btnLoading: false,
-        courses: [],
-        course: '',
+        collections: [],
+        collection: '',
         listVisible: true
       }
     },
+    props: ['type'],
     mounted () {
       this.init()
     },
     methods: {
       init () {
-        if (this.isContest) {
-          this.getContestCourseList()
-        } else {
-          this.getCourseList()
-        }
+        this.getCollectionList()
       },
-      getCourseList (page = 1) {
+      getCollectionList (page = 1) {
         this.btnLoading = true
-        api.getCourseList((page - 1) * this.limit, this.limit).then(res => {
+        api.getMyCollectionList(this.type, (page - 1) * this.limit, this.limit).then(res => {
           this.btnLoading = false
-          this.courses = res.data.data.results
+          this.collections = res.data.data.results
           this.total = res.data.data.total
         }, () => {
           this.btnLoading = false
         })
       },
-      getContestCourseList () {
+      getContestCollectionList () {
         this.btnLoading = true
-        api.getContestCourseList(this.$route.params.contestID).then(res => {
+        api.getContestCollectionList(this.$route.params.contestID).then(res => {
           this.btnLoading = false
-          this.courses = res.data.data
+          this.collections = res.data.data
         }, () => {
           this.btnLoading = false
         })
       },
-      goCourse (course) {
-        this.course = course
+      goCollection (collection) {
+        this.collection = collection
         this.listVisible = false
       },
       goBack () {
         this.listVisible = true
-        this.course = ''
+        this.collection = ''
       }
     },
     computed: {
       title () {
-        if (this.listVisible) {
-          return this.$i18n.t('m.Courses')
+        if (this.type === 'course') {
+          return this.$i18n.t('m.My_Course')
         } else {
-          return this.course.title
+          return this.$i18n.t('m.My_Practice')
         }
       },
       isContest () {
@@ -112,7 +90,7 @@
 </script>
 
 <style scoped lang="less">
-  .courses-container {
+  .collections-container {
     margin-top: -10px;
     margin-bottom: 10px;
     li {
@@ -156,12 +134,12 @@
     padding: 0 20px 20px 20px;
   }
 
-  .no-course {
+  .no-collection {
     text-align: center;
     font-size: 16px;
   }changeLocale
 
-  .course-animate-enter-active {
+  .collection-animate-enter-active {
     animation: fadeIn 1s;
   }
 </style>

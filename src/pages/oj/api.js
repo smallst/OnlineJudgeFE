@@ -22,6 +22,16 @@ export default {
       params
     })
   },
+  getMyCollectionList (type, offset, limit) {
+    let params = {
+      type: type,
+      offset: offset,
+      limit: limit
+    }
+    return ajax('collections/me', 'get', {
+      params
+    })
+  },
   getCourseList (offset, limit) {
     let params = {
       offset: offset,
@@ -122,6 +132,22 @@ export default {
   },
   getProblemTagList () {
     return ajax('problem/tags', 'get')
+  },
+  getCollectionList (type, offset, limit, searchParams) {
+    let params = {
+      paging: true,
+      type,
+      offset,
+      limit
+    }
+    Object.keys(searchParams).forEach((element) => {
+      if (searchParams[element]) {
+        params[element] = searchParams[element]
+      }
+    })
+    return ajax('collections', 'get', {
+      params: params
+    })
   },
   getProblemList (offset, limit, searchParams) {
     let params = {

@@ -1,4 +1,5 @@
 import ProblemList from './problem/ProblemList.vue'
+import CollectionList from './collection/CollectionList.vue'
 import Logout from './user/Logout.vue'
 import UserHome from './user/UserHome.vue'
 import About from './help/About.vue'
@@ -23,6 +24,7 @@ export {
   Home, NotFound, Announcements,
   Logout, UserHome, About, FAQ,
   ProblemList, Problem,
+  CollectionList,
   ACMRank, OIRank,
   SubmissionList, SubmissionDetails,
   ApplyResetPassword, ResetPassword

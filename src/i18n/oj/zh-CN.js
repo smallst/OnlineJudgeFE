@@ -71,6 +71,13 @@ export const m = {
   // Courses.vue
   Courses: '课程',
   No_Courses: '暂无课程',
+  Course_List: '课程列表',
+  // Practices.vue
+  Practices: ' 练习集',
+  No_Practices: '暂无练习集',
+  Practice_List: '练习集列表',
+  My_Course: '我的课程',
+  My_Practice: '我的练习集',
   // Announcements.vue
   Contest_Announcements: '比赛公告',
   By: '创建人',

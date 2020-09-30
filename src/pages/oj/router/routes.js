@@ -11,6 +11,7 @@ import {
   OIRank,
   Problem,
   ProblemList,
+  CollectionList,
   ResetPassword,
   SubmissionDetails,
   SubmissionList,
@@ -50,6 +51,13 @@ export default [
     path: '/problem',
     meta: {title: 'Problem List'},
     component: ProblemList
+  },
+  {
+    name: 'practice-list',
+    path: '/practices',
+    meta: {title: 'Practice List'},
+    component: CollectionList,
+    props: {type: 'practice'}
   },
   {
     name: 'problem-details',

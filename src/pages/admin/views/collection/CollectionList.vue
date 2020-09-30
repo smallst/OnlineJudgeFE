@@ -70,11 +70,12 @@
         </el-table-column>
         <el-table-column
           fixed="right"
-          width="250"
+          width="300"
           label="Operation">
           <div slot-scope="scope">
             <icon-btn name="Edit" icon="edit" @click.native="goEdit(scope.row.id)"></icon-btn>
             <icon-btn name="Problem" icon="list-ol" @click.native="goCollectionProblemList(scope.row.id)"></icon-btn>
+            <icon-btn name="Participants" icon="user" @click.native="goCollectionParticipantsList(scope.row.id)"></icon-btn>
             <icon-btn name="Announcement" icon="info-circle"
                       @click.native="goCollectionAnnouncement(scope.row.id)"></icon-btn>
             <icon-btn icon="download" name="Download Accepted Submissions"
@@ -162,6 +163,9 @@
       },
       goCollectionAnnouncement (collectionId) {
         this.$router.push({name: 'collection-announcement', params: {collectionId}})
+      },
+      goCollectionParticipantsList (collectionId) {
+        this.$router.push({name: this.type + '-participants-list', params: {id: collectionId}})
       },
       goCollectionProblemList (collectionId) {
         this.$router.push({name: this.type + '-problem-list', params: {id: collectionId}})

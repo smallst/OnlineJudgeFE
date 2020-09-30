@@ -21,13 +21,15 @@ export const m = {
   Course: '课程',
   Course_List: '课程列表',
   Create_Course: '创建课程',
-  Practice: '练习',
-  Practice_List: '练习列表',
-  Create_Practice: '创建练习',
+  Practice: '练习集',
+  Practice_List: '练习集列表',
+  Create_Practice: '创建练习集',
   // User.vue
   User_User: '用户',
   Import_User: '导入用户',
   Generate_User: '生成用户',
+  Practice_Participant_List: '练习集用户',
+  Course_Participant_List: '课程用户',
   // User.vue-dialog
   User_Info: '用户信息',
   User_Username: '用户名',

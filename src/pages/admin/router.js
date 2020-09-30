@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 // 引入 view 组件
 import { Announcement, Conf, Contest, ContestList, Collection, CollectionList, Home, JudgeServer, Login,
+         ParticipantList,
   Problem, ProblemList, User, PruneTestCase, Dashboard, ProblemImportOrExport } from './views'
 Vue.use(VueRouter)
 
@@ -110,6 +111,12 @@ export default new VueRouter({
           name: 'course-problem-list',
           component: ProblemList,
           props: {collectionType: 'course'}
+        },
+        {
+          path: '/practice/:id/participants',
+          name: 'practice-participants-list',
+          component: ParticipantList,
+          props: {collectionType: 'practice'}
         },
         {
           path: '/practice/:id/problems',
