@@ -1,8 +1,6 @@
 <template>
   <Row type="flex" :gutter="18">
-    <Row >
-    </Row>
-    <Col :span=19>
+    <Col :span=22>
     <Panel shadow>
       <div slot="title">{{collection.title}}</div>
       <Table style="width: 100%; font-size: 16px;"
@@ -19,7 +17,6 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import utils from '@/utils/utils'
   import Pagination from '@oj/components/Pagination'
 
   export default {
@@ -32,6 +29,25 @@
       return {
         tagList: [],
         collectionTableColumns: [
+          {
+            width: 60,
+            title: ' ',
+            render: (h, params) => {
+              let status = params.row.my_status
+              if (status === null || status === undefined) {
+                return undefined
+              }
+              return h('Icon', {
+                props: {
+                  type: status === 0 ? 'checkmark-round' : 'minus-round',
+                  size: '16'
+                },
+                style: {
+                  color: status === 0 ? '#19be6b' : '#ed3f14'
+                }
+              })
+            }
+          },
           {
             title: '#',
             key: '_id',
@@ -55,7 +71,7 @@
           },
           {
             title: this.$i18n.t('m.Title'),
-            width: 400,
+            /* width: 400, */
             render: (h, params) => {
               return h('Button', {
                 props: {
@@ -78,6 +94,7 @@
           },
           {
             title: this.$i18n.t('m.Level'),
+            width: 100,
             render: (h, params) => {
               let t = params.row.difficulty
               let color = 'blue'
@@ -89,10 +106,6 @@
                 }
               }, this.$i18n.t('m.' + params.row.difficulty))
             }
-          },
-          {
-            title: this.$i18n.t('m.Total'),
-            key: 'submission_number'
           }
         ],
         limit: 10,

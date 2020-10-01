@@ -54,25 +54,11 @@
           </template>
         </el-table-column>
         <el-table-column
-          width="100"
-          prop="visible"
-          label="Visible">
-          <template slot-scope="scope">
-            <el-switch v-model="scope.row.visible"
-                       active-text=""
-                       inactive-text=""
-                       @change="updateParticipant(scope.row)">
-            </el-switch>
-          </template>
-        </el-table-column>
-        <el-table-column
           fixed="right"
           label="Operation"
           width="250">
           <div slot-scope="scope">
             <icon-btn name="Edit" icon="edit" @click.native="goEdit(scope.row.id)"></icon-btn>
-            <icon-btn v-if="contestId" name="Make Public" icon="clone"
-                      @click.native="makeContestParticipantPublic(scope.row.id)"></icon-btn>
             <icon-btn icon="download" name="Download TestCase"
                       @click.native="downloadTestCase(scope.row.id)"></icon-btn>
             <icon-btn icon="trash" name="Delete Participant"
@@ -94,7 +80,7 @@
         </el-pagination>
       </div>
     </Panel>
-    <el-dialog title="Add Contest Participant"
+    <el-dialog title="Add Collections Participant"
                width="80%"
                :visible.sync="addParticipantDialogVisible"
                @close-on-click-modal="false">
@@ -173,7 +159,6 @@
           limit: this.pageSize,
           offset: (page - 1) * this.pageSize,
           keyword: this.keyword,
-          contest_id: this.contestId,
           collection_id: this.courseId || this.practiceId,
           collection_type: this.collectionType
         }
@@ -189,37 +174,15 @@
         })
       },
       deleteParticipant (id) {
-        this.$confirm('Sure to delete this participant? The associated submissions will be deleted as well.', 'Delete Participant', {
+        this.$confirm('Sure to delete this participant?', 'Delete Participant', {
           type: 'warning'
         }).then(() => {
-          let funcName = this.contestId ? 'deleteContestParticipant' : 'deleteParticipant'
+          let funcName = 'deleteParticipant'
           api[funcName](id).then(() => [
             this.getParticipantList(this.currentPage - 1)
           ]).catch(() => {
           })
         }, () => {
-        })
-      },
-      makeContestParticipantPublic (participantID) {
-        this.$prompt('Please input display id for the public participant', 'confirm').then(({value}) => {
-          api.makeContestParticipantPublic({id: participantID, display_id: value}).catch()
-        }, () => {
-        })
-      },
-      updateParticipant (row) {
-        let data = Object.assign({}, row)
-        let funcName = ''
-        if (this.contestId) {
-          data.contest_id = this.contestId
-          funcName = 'editContestParticipant'
-        } else {
-          funcName = 'editParticipant'
-        }
-        api[funcName](data).then(res => {
-          this.InlineEditDialogVisible = false
-          this.getParticipantList(this.currentPage)
-        }).catch(() => {
-          this.InlineEditDialogVisible = false
         })
       },
       handleInlineEdit (row) {

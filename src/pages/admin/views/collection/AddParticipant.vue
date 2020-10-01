@@ -67,18 +67,16 @@
     },
     methods: {
       getUsers (page) {
+        console.log('page is', page)
         this.loading = true
-        let params = {
-          keyword: this.keyword,
-          offset: (page - 1) * this.limit,
-          limit: this.limit
-        }
-        api.getUserList(params).then(res => {
-          this.loading = false
-          this.total = res.data.data.total
-          this.participants = res.data.data.results
-        }).catch(() => {
-        })
+        api.getUserList((page - 1) * this.limit,
+                        this.limit,
+                        this.keyword).then(res => {
+                          this.loading = false
+                          this.total = res.data.data.total
+                          this.participants = res.data.data.results
+                        }).catch(() => {
+                        })
       },
       handleAddParticipant (participantID) {
         let data = {

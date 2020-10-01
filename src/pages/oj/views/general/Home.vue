@@ -1,6 +1,6 @@
 <template>
   <Row type="flex" justify="space-around">
-    <Col :span="18">
+    <Col :span="18" v-if="isAuthenticated">
     <Collections :type="'course'" class="courses"></Collections>
     <Collections :type="'practice'" class="practices"></Collections>
     </Col>
@@ -41,6 +41,7 @@
  import Practices from './Practices.vue'
  import api from '@oj/api'
  import time from '@/utils/time'
+ import { mapGetters } from 'vuex'
  import { CONTEST_STATUS } from '@/utils/constants'
 
  export default {
@@ -49,6 +50,9 @@
      Announcements,
      Collections,
      Practices
+   },
+   computed: {
+     ...mapGetters(['isAuthenticated'])
    },
    data () {
      return {
