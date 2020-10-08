@@ -200,6 +200,7 @@ export const m = {
   All: 'All',
   Reset: 'Reset',
   Pick_One: 'Pick one',
+  Pick_Next: 'Pick next',
   Difficulty: 'Difficulty',
   Total: 'Total',
   AC_Rate: 'AC Rate',

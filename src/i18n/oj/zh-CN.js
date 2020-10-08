@@ -210,6 +210,7 @@ export const m = {
   All: '全部',
   Reset: '重置',
   Pick_One: '选择',
+  Pick_Next: '下一题',
   Difficulty: '难度',
   Total: '总数',
   AC_Rate: '通过率',

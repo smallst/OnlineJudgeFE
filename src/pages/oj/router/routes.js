@@ -66,6 +66,12 @@ export default [
     component: Problem
   },
   {
+    name: 'collection-problem-details',
+    path: '/collection/problem/:problemIndex',
+    meta: {title: 'Collection Problem Details'},
+    component: Problem
+  },
+  {
     name: 'submission-list',
     path: '/status',
     meta: {title: 'Submission List'},

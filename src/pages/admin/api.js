@@ -203,8 +203,8 @@ export default {
       data
     })
   },
-  getList (type, offset, limit, keyword) {
-    let params = {paging: true, offset, limit}
+  getList (type, offset, limit, keyword, id) {
+    let params = {paging: true, offset, limit, id}
     if (keyword) {
       params.keyword = keyword
     }
@@ -263,6 +263,11 @@ export default {
   },
   addCollectionProblem (data) {
     return ajax('admin/collection/problem', 'post', {
+      data
+    })
+  },
+  addCoursePractice (data) {
+    return ajax('admin/course-practice', 'post', {
       data
     })
   },
@@ -352,6 +357,15 @@ export default {
   addCollectionParticipant (data) {
     return ajax('admin/collection/participant', 'post', {
       data
+    })
+  },
+  deleteParticipant (type, cid, id) {
+    return ajax('admin/collection/participant', 'delete', {
+      params: {
+        type,
+        cid,
+        id
+      }
     })
   },
   getReleaseNotes () {

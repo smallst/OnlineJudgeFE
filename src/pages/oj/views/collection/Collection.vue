@@ -8,7 +8,7 @@
              :data="problems"
              disabled-hover></Table>
     </Panel>
-    <Pagination :total="total" :page-size="limit" @on-change="pushRouter" :current.sync="query.page"></Pagination>
+    <Pagination :total="total" :page-size="limit" :current.sync="query.page"></Pagination>
 
     </Col>
 
@@ -50,7 +50,7 @@
           },
           {
             title: '#',
-            key: '_id',
+            key: 'id',
             width: 80,
             render: (h, params) => {
               return h('Button', {
@@ -60,13 +60,13 @@
                 },
                 on: {
                   click: () => {
-                    this.$router.push({name: 'problem-details', params: {problemID: params.row._id}})
+                    this.$router.push({name: 'collection-problem-details', params: {problemIndex: params.index, collection: this.collection}})
                   }
                 },
                 style: {
                   padding: '2px 0'
                 }
-              }, params.row._id)
+              }, params.index + 1)
             }
           },
           {
@@ -80,7 +80,7 @@
                 },
                 on: {
                   click: () => {
-                    this.$router.push({name: 'problem-details', params: {problemID: params.row._id}})
+                    this.$router.push({name: 'collection-problem-details', params: {problemIndex: params.index, collection: this.collection}})
                   }
                 },
                 style: {

@@ -1,4 +1,5 @@
-import moment from 'moment'
+// import moment from 'moment/src/moment'
+var moment = require('moment')
 
 // convert utc time to localtime
 function utcToLocal (utcDt, format = 'YYYY-M-D  HH:mm:ss') {

@@ -42,8 +42,8 @@
           label="Collection Type"
           width="180">
           <template slot-scope="scope">
-            <el-tag :type="scope.row.collection_type === 'Public' ? 'success' : 'primary'">
-              {{ scope.row.collection_type}}
+            <el-tag :type="type === 'course' ? 'success' : 'primary'">
+              {{ type }}
             </el-tag>
           </template>
         </el-table-column>
@@ -75,6 +75,7 @@
           <div slot-scope="scope">
             <icon-btn name="Edit" icon="edit" @click.native="goEdit(scope.row.id)"></icon-btn>
             <icon-btn name="Problem" icon="list-ol" @click.native="goCollectionProblemList(scope.row.id)"></icon-btn>
+            <icon-btn v-if="type==='course'" name="Practice" icon="list-ol" @click.native="goCoursePracticeList(scope.row.id)"></icon-btn>
             <icon-btn name="Participants" icon="user" @click.native="goCollectionParticipantsList(scope.row.id)"></icon-btn>
             <icon-btn name="Announcement" icon="info-circle"
                       @click.native="goCollectionAnnouncement(scope.row.id)"></icon-btn>
@@ -84,6 +85,11 @@
         </el-table-column>
       </el-table>
       <div class="panel-options">
+        <el-button type="primary"
+                   size="small" icon="el-icon-plus"
+                   v-if="type==='course-practice'"
+                   @click="addPracticeDialogVisible = true">Add Practice
+        </el-button>
         <el-pagination
           class="page"
           layout="prev, pager, next"
@@ -101,6 +107,12 @@
         <el-button type="primary" @click="downloadSubmissions">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="Add Course Practice"
+               width="80%"
+               :visible.sync="addPracticeDialogVisible"
+               @close-on-click-modal="false">
+      <add-practice-component :cid="id" @on-change="getList"></add-practice-component>
+    </el-dialog>
   </div>
 </template>
 
@@ -108,9 +120,18 @@
   import api from '../../api.js'
   import utils from '@/utils/utils'
   import {COLLECTION_STATUS_REVERSE} from '@/utils/constants'
+  import AddPracticeComponent from './AddPractice.vue'
 
   export default {
     name: 'CollectionList',
+    components: {
+      AddPracticeComponent
+    },
+    computed: {
+      id () {
+        return this.$route.params.id
+      }
+    },
     data () {
       return {
         pageSize: 10,
@@ -121,7 +142,8 @@
         excludeAdmin: true,
         currentPage: 1,
         currentId: 1,
-        downloadDialogVisible: false
+        downloadDialogVisible: false,
+        addPracticeDialogVisible: false
       }
     },
     props: ['type'],
@@ -141,7 +163,7 @@
       },
       getList (page) {
         this.loading = true
-        api.getList(this.type, (page - 1) * this.pageSize, this.pageSize, this.keyword).then(res => {
+        api.getList(this.type, (page - 1) * this.pageSize, this.pageSize, this.keyword, this.$route.params.id).then(res => {
           this.loading = false
           this.total = res.data.data.total
           this.collectionList = res.data.data.results
@@ -166,6 +188,9 @@
       },
       goCollectionParticipantsList (collectionId) {
         this.$router.push({name: this.type + '-participants-list', params: {id: collectionId}})
+      },
+      goCoursePracticeList (collectionId) {
+        this.$router.push({name: this.type + '-practice-list', params: {id: collectionId}})
       },
       goCollectionProblemList (collectionId) {
         this.$router.push({name: this.type + '-problem-list', params: {id: collectionId}})

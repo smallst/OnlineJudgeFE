@@ -186,6 +186,11 @@
           <ECharts :options="pie"></ECharts>
         </div>
       </Card>
+
+      <Button v-if="problemIndex < collection.problems.length - 1" :type="problem.my_status===0? 'success': 'ghost'" long id="pick-one" @click="picknext">
+        <Icon type="shuffle"></Icon>
+        {{$t('m.Pick_Next')}}
+      </Button>
     </div>
 
     <Modal v-model="graphVisible">
@@ -228,6 +233,8 @@
         captchaSrc: '',
         contestID: '',
         problemID: '',
+        problemIndex: -1,
+        collection: {problems: []},
         submitting: false,
         code: '',
         language: 'C++',
@@ -277,11 +284,25 @@
     },
     methods: {
       ...mapActions(['changeDomTitle']),
+      picknext () {
+        this.$router.push({name: 'collection-problem-details', params: {problemIndex: this.problemIndex + 1, collection: this.collection}})
+      },
       init () {
         this.$Loading.start()
         this.contestID = this.$route.params.contestID
         this.problemID = this.$route.params.problemID
-        let func = this.$route.name === 'problem-details' ? 'getProblem' : 'getContestProblem'
+        let func = 'getContestProblem'
+        switch (this.$route.name) {
+          case 'collection-problem-details':
+            this.problemIndex = this.$route.params.problemIndex
+            this.collection = this.$route.params.collection
+            this.problemID = this.collection.problems[this.problemIndex]._id
+            func = 'getProblem'
+            break
+          case 'problem-details':
+            func = 'getProblem'
+            break
+        }
         api[func](this.problemID, this.contestID).then(res => {
           this.$Loading.finish()
           let problem = res.data.data

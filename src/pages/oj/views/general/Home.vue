@@ -93,6 +93,9 @@
      }
    }
  }
+ .courses{
+   margin-bottom: 5vh;
+ }
 
  .announcement {
    margin-top: 20px;

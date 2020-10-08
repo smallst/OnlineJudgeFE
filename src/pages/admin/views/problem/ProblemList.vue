@@ -141,7 +141,7 @@
         }
       },
       cId () {
-        return this.contestId || this.courseid || this.practiceId
+        return this.contestId || this.courseId || this.practiceId
       },
       pageTitle () {
         if (this.contestId) {
@@ -176,6 +176,7 @@
     mounted () {
       this.routeName = this.$route.name
       this.contestId = this.$route.params.contestId
+      console.log(this.collectionType)
       switch (this.collectionType) {
         case 'course':
           this.courseId = this.$route.params.id
@@ -184,6 +185,7 @@
           this.practiceId = this.$route.params.id
           break
       }
+      console.log(this.courseId)
       this.getProblemList(this.currentPage)
     },
     methods: {

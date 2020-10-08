@@ -12,7 +12,8 @@
       <div class="no-collection" v-if="!collections.length" key="no-collection">
         <p>{{$t('m.No_Collections')}}</p>
       </div>
-      <Collection v-for="collection in collections" :key="collection.id" :collection="collection" ></Collection>
+      <Collection v-if="collections.length" :key="collections[0].id" :collection="collections[0]" ></Collection>
+      <Pagination :key="title" :total="total" :page-size="limit" @on-change="getCollectionList"></Pagination>
     </transition-group>
   </Panel>
 </template>
@@ -28,14 +29,17 @@
       Pagination,
       Collection
     },
+    watch: {
+    },
     data () {
       return {
-        limit: 10,
+        limit: 1,
         total: 10,
         btnLoading: false,
         collections: [],
         collection: '',
-        listVisible: true
+        listVisible: true,
+        page: 1
       }
     },
     props: ['type'],
@@ -45,6 +49,9 @@
     methods: {
       init () {
         this.getCollectionList()
+      },
+      currentChange (page) {
+        console.log('change page', page)
       },
       getCollectionList (page = 1) {
         this.btnLoading = true

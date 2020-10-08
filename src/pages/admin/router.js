@@ -113,6 +113,18 @@ export default new VueRouter({
           props: {collectionType: 'course'}
         },
         {
+          path: '/course/:id/practices',
+          name: 'course-practice-list',
+          component: CollectionList,
+          props: {type: 'course-practice'}
+        },
+        {
+          path: '/course/:id/participants',
+          name: 'course-participants-list',
+          component: ParticipantList,
+          props: {collectionType: 'course'}
+        },
+        {
           path: '/practice/:id/participants',
           name: 'practice-participants-list',
           component: ParticipantList,

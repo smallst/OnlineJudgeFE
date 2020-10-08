@@ -21,29 +21,11 @@
           label="ID">
         </el-table-column>
         <el-table-column
-          width="150"
-          label="Display ID">
+          prop="name"
+          label="name">
           <template slot-scope="{row}">
-            <span v-show="!row.isEditing">{{row._id}}</span>
-            <el-input v-show="row.isEditing" v-model="row._id"
-                      @keyup.enter.native="handleInlineEdit(row)">
-
-            </el-input>
+            <span>{{row.username}}</span>
           </template>
-        </el-table-column>
-        <el-table-column
-          prop="title"
-          label="Title">
-          <template slot-scope="{row}">
-            <span v-show="!row.isEditing">{{row.title}}</span>
-            <el-input v-show="row.isEditing" v-model="row.title"
-                      @keyup.enter.native="handleInlineEdit(row)">
-            </el-input>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="created_by.username"
-          label="Author">
         </el-table-column>
         <el-table-column
           width="200"
@@ -58,7 +40,6 @@
           label="Operation"
           width="250">
           <div slot-scope="scope">
-            <icon-btn name="Edit" icon="edit" @click.native="goEdit(scope.row.id)"></icon-btn>
             <icon-btn icon="download" name="Download TestCase"
                       @click.native="downloadTestCase(scope.row.id)"></icon-btn>
             <icon-btn icon="trash" name="Delete Participant"
@@ -104,7 +85,7 @@
         return this.collectionType
       },
       cId () {
-        return this.courseid || this.practiceId
+        return this.courseId || this.practiceId
       },
       pageTitle () {
         if (this.collectionType === 'course') {
@@ -123,7 +104,7 @@
         loading: false,
         currentPage: 1,
         routeName: '',
-        couseId: '',
+        courseId: '',
         practiceId: '',
         // for make public use
         currentParticipantID: '',
@@ -178,7 +159,7 @@
           type: 'warning'
         }).then(() => {
           let funcName = 'deleteParticipant'
-          api[funcName](id).then(() => [
+          api[funcName](this.collectionType, this.cId, id).then(() => [
             this.getParticipantList(this.currentPage - 1)
           ]).catch(() => {
           })
